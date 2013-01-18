@@ -311,6 +311,8 @@
             <div class="carousel-caption">
               <h1>Why be hungry?</h1>
               <p class="lead">Get your favourite khanawala at your doorstep.<br><br>
+                {{error_login}}
+                <!-- <div class="alert alert-error" id="err_login"></div> -->
                 <form action="/signup" method="post">
                   <input type="text" placeholder="Email (@iitj.ac.in)" name="email"><br>
                   <input type="password" placeholder="Password" name="password"><br></p>
@@ -401,7 +403,10 @@
 
       $('#close').bind('click', function() {
         $('#registerModal').modal('hide');
-      })
+      });
+
+      //if({{is_error}} != 1)
+        //$('#err_login').hide();
       /*!function ($) {
         $(function(){
           // carousel demo

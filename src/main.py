@@ -96,6 +96,11 @@ class User (db.Model):
         pw_hash = make_pw_hash(name, password)
         return User(parent = user_key(), name = name, email = email, pw_hash = pw_hash, phone_no = phone_no, room_no = room_no)
 
+    @classmethod
+    def login(cls, email , pw):
+        u = cls.by_email(email)
+        if u and valid_pw(u.name, pw, u.pw_hash):
+            return u
     
 
 class MainPage(BaseHandler):
@@ -110,7 +115,7 @@ class SignUp(BaseHandler):
     def post(self):
         
         name = self.request.get('name')
-        email = self.request.get('username')
+        email = self.request.get('email')
         password = self.request.get('password')
         room_no = int(self.request.get('room_no'))
         phone_no = self.request.get('phone_no')
@@ -128,10 +133,34 @@ class SignUp(BaseHandler):
             self.login(u)
             self.response.write('{"response": 0}')
             
-    
+class LogIn(BaseHandler):
+    def get(self):
+        if self.user:
+            self.redirect('/welcome')
+        else:
+            self.render("/")
+
+    def post(self):
+        email = self.request.get('email')
+        pw = self.request.get('password')
+   
+        u = User.login(email, pw)
         
+        if u:
+            self.login(u)
+            self.redirect('/id/'+str(u.key().id()))
+        else:
+            self.render('signin.html', is_error = 1, error_login = "Invalid Login")
         
+class UserHome(BaseHandler):
+    def get(self, user_id):
+        uid = int(user_id)
+        self.response.write(uid)
+        
+        pass        
 
 app = webapp2.WSGIApplication([('/', MainPage),
-                               ('/signup', SignUp)],
+                               ('/signup', SignUp),
+                               ('/login', LogIn),
+                               ('/id/([0-9]+)', UserHome)],
                               debug=True)

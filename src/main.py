@@ -110,9 +110,9 @@ class SignUp(BaseHandler):
     def post(self):
         
         name = self.request.get('name')
-        email = self.request.get('email')
+        email = self.request.get('username')
         password = self.request.get('password')
-        room_no = self.request.get('room_no')
+        room_no = int(self.request.get('room_no'))
         phone_no = self.request.get('phone_no')
         
         
@@ -121,12 +121,12 @@ class SignUp(BaseHandler):
         u = User.by_email(email)
         
         if u:
-            self.response.write("{response: 1}")
+            self.response.write('{response: 1}')
         else:
             u = User.register(name, email, password, phone_no, room_no)
             u.put()
             self.login(u)
-            self.response.write("{response: 0}")
+            self.response.write('{"response": 0}')
             
     
         

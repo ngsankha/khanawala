@@ -380,8 +380,7 @@
                            name:     $('#name').val(),
                            phone_no: $('#phone').val(),
                            room_no:  $('#room').val()}
-                           , function(data) {
-                            obj = eval(data);
+                           , function(obj) {
                             if(obj.response == 0) {
                               $('#msg').html("You have been successfully registered!");
                               $('#email').hide();
@@ -393,7 +392,7 @@
                             } else if(obj.response == 1) {
                               $('#msg').html("The email ID is already registered. Please use another email ID.");
                             }
-                           });
+                           }, "json");
       });
 
       $('#close').bind('click', function() {

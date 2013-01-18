@@ -310,7 +310,7 @@
           <div class="container">
             <div class="carousel-caption">
               <h1>Why be hungry?</h1>
-              <p class="lead">Get your favourite khanawala at your doorstep.<br><br><input type="text" placeholder="Username"><br>
+              <p class="lead">Get your favourite khanawala at your doorstep.<br><br><input type="text" placeholder="Email (@iitj.ac.in)"><br>
                 <input type="password" placeholder="Password"><br></p>
               <input type="submit" class="btn btn-large btn-primary" value="Login">&nbsp;&nbsp;&nbsp;
               <button class="btn btn-large" data-toggle="modal" data-target="#registerModal">Register</button>
@@ -341,17 +341,17 @@
         <h3>Register</h3>
       </div>
       <div class="modal-body">
-        <p>Please enter the following details correctly to register.<br><br>
-          <input type="text" placeholder="Email (@iitj.ac.in)"><br>
-          <input type="password" placeholder="Password"><br>
-          <input type="text" placeholder="Full Name"><br>
-          <input type="text" placeholder="Phone Number"><br>
-          <input type="text" placeholder="Room Number"><br>
+        <p><div id="msg" class="alert">Please enter the following details correctly to register.</div>
+          <input type="text" placeholder="Email (@iitj.ac.in)" id="email"><br>
+          <input type="password" placeholder="Password" id="password"><br>
+          <input type="text" placeholder="Full Name" id="name"><br>
+          <input type="text" placeholder="Phone Number" id="phone"><br>
+          <input type="text" placeholder="Room Number" id="room"><br>
         </p>
       </div>
       <div class="modal-footer">
-        <a href="#" class="btn">Close</a>
-        <a href="#" class="btn btn-primary">Register</a>
+        <a href="#" class="btn" id="close">Close</a>
+        <a href="#" class="btn btn-primary" id="register">Register</a>
       </div>
     </div>
 
@@ -374,6 +374,31 @@
     <script src="../assets/js/bootstrap-carousel.js"></script>
     <script src="../assets/js/bootstrap-typeahead.js"></script>
     <script>
+      $('#register').bind('click', function(){
+        $.post('/signup', {username: $('#email').val(),
+                           password: $('#password').val(),
+                           name:     $('#name').val(),
+                           phone_no: $('#phone').val(),
+                           room_no:  $('#room').val()}
+                           , function(data) {
+                            obj = eval(data);
+                            if(obj.response == 0) {
+                              $('#msg').html("You have been successfully registered!");
+                              $('#email').hide();
+                              $('#password').hide();
+                              $('#name').hide();
+                              $('#phone').hide();
+                              $('#room').hide();
+                              $('#register').hide();
+                            } else if(obj.response == 1) {
+                              $('#msg').html("The email ID is already registered. Please use another email ID.");
+                            }
+                           });
+      });
+
+      $('#close').bind('click', function() {
+        $('#registerModal').modal('hide');
+      })
       /*!function ($) {
         $(function(){
           // carousel demo

@@ -381,7 +381,7 @@
     <script src="../assets/js/bootstrap-typeahead.js"></script>
     <script>
       $('#register').bind('click', function(){
-        $.post('/signup', {username: $('#email').val(),
+        $.post('/signup', {email:    $('#email').val(),
                            password: $('#password').val(),
                            name:     $('#name').val(),
                            phone_no: $('#phone').val(),

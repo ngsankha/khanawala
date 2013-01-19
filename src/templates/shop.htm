@@ -117,13 +117,9 @@
   {
 	  var sel = document.getElementById("shop");
 
-
-	  if(sel.options[sel.selectedIndex].value==1){
-		  window.location = "1.html";
-	  }
-	  	else  if(sel.options[sel.selectedIndex].value==2){
-		  window.location = "2.html";
-	  }
+var x=sel.options[sel.selectedIndex].value;
+	 
+		  window.location = x+".html";
 	  
 	  
 	  
